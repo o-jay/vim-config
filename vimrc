@@ -11,7 +11,7 @@ let g:nerdtree_tabs_smart_startup_focus=2
 " General settings
 set nofoldenable showcmd ruler number autoindent showmode autoindent showmatch
 set nohidden nobackup nowritebackup noswapfile noautowrite title wrap
-set noerrorbells
+set noerrorbells splitbelow splitright
 
 " Gui options
 if has("gui_running")
@@ -120,12 +120,22 @@ nnoremap j          gj
 nnoremap k          gk
 nnoremap f			0
 nnoremap g			$
-inoremap <C-j>		<Down>
-inoremap <C-k>      <Up>
-inoremap <C-l>      <Right>
-inoremap <C-h>      <Left>
-inoremap <C-f>		<C-o>0
-inoremap <C-g>		<C-o>$
+"inoremap <C-j>		<Down>
+"inoremap <C-k>      <Up>
+"inoremap <C-l>      <Right>
+"inoremap <C-h>      <Left>
+"inoremap <C-f>		<C-o>0
+"inoremap <C-g>		<C-o>$
+
+" Splits
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+"inoremap <C-J> <Esc><C-W><C-J>
+"inoremap <C-K> <C-W><C-K>
+"inoremap <C-L> <C-W><C-L>
+"inoremap <C-H> <C-W><C-H>
 
 " Make
 nnoremap m			:!clear<CR>:M<CR>
@@ -141,3 +151,7 @@ nnoremap <leader>e :e $MYVIMRC<CR>
 nnoremap <leader>a :%y+<CR>
 " Source the current file
 nnoremap <leader>s :so %<CR>
+
+" Macro to repeat last command (used in ConqueTerm)
+let @r = "i!!"
+"let @r = "i!!"
