@@ -9,7 +9,7 @@ let g:nerdtree_tabs_open_on_gui_startup=1
 let g:nerdtree_tabs_smart_startup_focus=2
 
 " General settings
-set nofoldenable showcmd ruler number autoindent showmode autoindent showmatch
+set nofoldenable showcmd ruler number autoindent showmode showmatch
 set nohidden nobackup nowritebackup noswapfile noautowrite title wrap
 set noerrorbells splitbelow splitright
 
@@ -57,8 +57,6 @@ set mousemodel=popup
 " Other settings
 set backspace=2
 set scrolloff=10
-set textwidth=0
-set wrapmargin=0
 set modelines=0
 set clipboard=unnamedplus
 set showtabline=2
@@ -66,6 +64,20 @@ set history=1000
 set undolevels=1000
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.o
 set tabpagemax=50
+
+" Functions for setting wrapping for text editing or code editing
+function! CodeMode()
+	set textwidth=0
+	set wrapmargin=0
+endfunction
+
+function! TextMode()
+	set textwidth=80
+	set wrapmargin=80
+endfunction
+
+" CodeMode by default
+call CodeMode()
 
 " Disable bells
 set noerrorbells visualbell t_vb=
@@ -151,6 +163,10 @@ nnoremap <leader>e :e $MYVIMRC<CR>
 nnoremap <leader>a :%y+<CR>
 " Source the current file
 nnoremap <leader>s :so %<CR>
+
+" Change the wrap mode
+nnoremap <leader>mc :call CodeMode()<CR>
+nnoremap <leader>mt :call TextMode()<CR>
 
 " Macro to repeat last command (used in ConqueTerm)
 let @r = "i!!"
