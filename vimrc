@@ -4,9 +4,19 @@ set nocompatible
 " Plugins
 filetype off " Gets turned on later, but it screws up pathogen if it's on now
 execute pathogen#infect()
+
+" Nerd tree
 let g:nerdtree_tabs_open_on_console_startup=0
 let g:nerdtree_tabs_open_on_gui_startup=1
 let g:nerdtree_tabs_smart_startup_focus=2
+
+" Nerd commenter
+let g:NERDSpaceDelims=1
+" By default, nerdcommenter uses C++ style comments for all C/C++ header files.
+" These aren't valid in versions of C pre-C99 so we set custom delimiters
+let g:NERDCustomDelimiters = {
+	\ 'h': { 'left': '/*', 'right': '*/', 'leftAlt': '//' }
+\ }
 
 " General settings
 set nofoldenable showcmd ruler number autoindent showmode showmatch
