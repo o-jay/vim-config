@@ -42,6 +42,13 @@ set grepprg=grep\ -nH\ $*
 let &colorcolumn="80,120"
 highlight ColorColumn ctermbg=DarkGray guibg=#2c2d27
 
+" Highlighting for other languages
+au BufNewFile,BufRead *.arc set filetype=lisp
+au BufNewFile,BufRead *.nut set filetype=java " Close enough for Squirrel
+
+" Settings for git commit messages
+autocmd Filetype gitcommit setlocal spell textwidth=72
+
 " Status line
 set laststatus=2
 
