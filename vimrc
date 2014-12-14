@@ -7,7 +7,7 @@ execute pathogen#infect()
 
 " Nerd tree
 let g:nerdtree_tabs_open_on_console_startup=0
-let g:nerdtree_tabs_open_on_gui_startup=1
+let g:nerdtree_tabs_open_on_gui_startup=0
 let g:nerdtree_tabs_smart_startup_focus=2
 
 " Nerd commenter
@@ -116,9 +116,7 @@ nnoremap <C-f>      :NERDTreeTabsToggle<CR>
 inoremap <C-f>      <Esc>:NERDTreeTabsToggle<CR>
 
 " Escaping
-map      <F1>	    <Esc>
 inoremap jj         <Esc>
-nnoremap <silent>   <Esc> :noh<CR><Esc>
 
 " Match current bracket
 nnoremap <tab>		%
@@ -184,7 +182,3 @@ nnoremap <leader>s :so %<CR>
 " Change the wrap mode
 nnoremap <leader>mc :call CodeMode()<CR>
 nnoremap <leader>mt :call TextMode()<CR>
-
-" Macro to repeat last command (used in ConqueTerm)
-let @r = "i!!"
-"let @r = "i!!"
