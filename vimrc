@@ -45,6 +45,7 @@ highlight ColorColumn ctermbg=DarkGray guibg=#2c2d27
 " Highlighting for other languages
 au BufNewFile,BufRead *.arc set filetype=lisp
 au BufNewFile,BufRead *.nut set filetype=java " Close enough for Squirrel
+au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl setf glsl
 
 " Settings for git commit messages
 autocmd Filetype gitcommit setlocal spell textwidth=72
