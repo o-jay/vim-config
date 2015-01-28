@@ -67,6 +67,10 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 
+" Lisp
+autocmd FileType lisp setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+autocmd FileType scheme setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+
 " Mouse
 set mouse=a
 set nomousehide
