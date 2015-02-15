@@ -43,6 +43,7 @@ let &colorcolumn="80,120"
 highlight ColorColumn ctermbg=DarkGray guibg=#2c2d27
 
 " Highlighting for other languages
+au BufNewFile,BufRead *.chrd set filetype=conf
 au BufNewFile,BufRead *.arc set filetype=lisp
 au BufNewFile,BufRead *.nut set filetype=java " Close enough for Squirrel
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl setf glsl
