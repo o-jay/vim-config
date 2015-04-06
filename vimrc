@@ -47,6 +47,7 @@ au BufNewFile,BufRead *.chrd set filetype=conf
 au BufNewFile,BufRead *.arc set filetype=lisp
 au BufNewFile,BufRead *.nut set filetype=java " Close enough for Squirrel
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl setf glsl
+au BufNewFile,BufRead *.kisl set filetype=c
 
 " Settings for git commit messages
 autocmd Filetype gitcommit setlocal spell textwidth=72
@@ -81,7 +82,7 @@ set mousemodel=popup
 set backspace=2
 set scrolloff=10
 set modelines=0
-set clipboard=unnamedplus
+set clipboard=unnamed
 set showtabline=2
 set history=1000
 set undolevels=1000
@@ -153,22 +154,12 @@ nnoremap j          gj
 nnoremap k          gk
 nnoremap f			0
 nnoremap g			$
-"inoremap <C-j>		<Down>
-"inoremap <C-k>      <Up>
-"inoremap <C-l>      <Right>
-"inoremap <C-h>      <Left>
-"inoremap <C-f>		<C-o>0
-"inoremap <C-g>		<C-o>$
 
 " Splits
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
-"inoremap <C-J> <Esc><C-W><C-J>
-"inoremap <C-K> <C-W><C-K>
-"inoremap <C-L> <C-W><C-L>
-"inoremap <C-H> <C-W><C-H>
 
 " Make
 nnoremap m			:!clear<CR>:M<CR>
