@@ -4,19 +4,35 @@ set nocompatible
 " Plugins
 filetype off " Gets turned on later, but it screws up pathogen if it's on now
 execute pathogen#infect()
+Helptags
 
-" Nerd tree
+" Nerd tree settings
 let g:nerdtree_tabs_open_on_console_startup=0
 let g:nerdtree_tabs_open_on_gui_startup=0
 let g:nerdtree_tabs_smart_startup_focus=2
 
-" Nerd commenter
+" Nerd commenter settings
 let g:NERDSpaceDelims=1
 " By default, nerdcommenter uses C++ style comments for all C/C++ header files.
 " These aren't valid in versions of C pre-C99 so we set custom delimiters
 let g:NERDCustomDelimiters = {
 	\ 'h': { 'left': '/*', 'right': '*/', 'leftAlt': '//' }
 \ }
+
+" Haskell settings
+let g:haskell_enable_quantification = 1
+let g:haskell_enable_recursivedo = 1
+let g:haskell_enable_arrowsyntax = 1
+let g:haskell_enable_pattern_synonyms = 1
+let g:haskell_enable_typeroles = 1
+let g:haskell_enable_static_pointers = 1
+let g:haskell_indent_if = 3
+let g:haskell_indent_case = 2
+let g:haskell_indent_let = 4
+let g:haskell_indent_where = 6
+let g:haskell_indent_do = 3
+let g:haskell_indent_in = 1
+let g:cabal_indent_section = 2
 
 " General settings
 set nofoldenable showcmd ruler number autoindent showmode showmatch
@@ -35,7 +51,7 @@ endif
 
 " Highlighting
 filetype on
-filetype plugin on
+filetype plugin indent on
 syntax enable
 set grepprg=grep\ -nH\ $*
 "let &colorcolumn="80,".join(range(120,500),",")
@@ -48,6 +64,7 @@ au BufNewFile,BufRead *.arc set filetype=lisp
 au BufNewFile,BufRead *.nut set filetype=java " Close enough for Squirrel
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl setf glsl
 au BufNewFile,BufRead *.kisl set filetype=c
+au BufNewFile,BufRead *.chs set filetype=haskell
 
 " Settings for git commit messages
 autocmd Filetype gitcommit setlocal spell textwidth=72
@@ -64,14 +81,15 @@ set incsearch ignorecase smartcase hlsearch
 " Filetypes
 filetype plugin indent on
 
-" Indents
+" Indents (normally use tabs)
 set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 
-" Lisp
+" Use 2 spaces in haskell and lisps
 autocmd FileType lisp setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 autocmd FileType scheme setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 " Mouse
 set mouse=a
@@ -117,10 +135,10 @@ autocmd BufWritePre * :%s/\s\+$//e
 set pastetoggle=<F2>
 
 " Nerd Tree binds
-nnoremap <C-d>      :NERDTreeFocusToggle<CR>
-inoremap <C-d>      <Esc>:NERDTreeFocusToggle<CR>
-nnoremap <C-f>      :NERDTreeTabsToggle<CR>
-inoremap <C-f>      <Esc>:NERDTreeTabsToggle<CR>
+" nnoremap <C-d>      :NERDTreeFocusToggle<CR>
+" inoremap <C-d>      <Esc>:NERDTreeFocusToggle<CR>
+" nnoremap <C-f>      :NERDTreeTabsToggle<CR>
+" inoremap <C-f>      <Esc>:NERDTreeTabsToggle<CR>
 
 " Escaping
 inoremap jj         <Esc>
@@ -143,7 +161,8 @@ inoremap <C-t>      <Esc>:tabnew<CR>
 cmap     w!!        w !sudo tee % >/dev/null
 
 " Open a bash shell
-nnoremap <C-b>    :ConqueTermTab bash<CR>
+" Note: moved to a leader binding to avoid tmux conflict
+" nnoremap <C-b>    :ConqueTermTab bash<CR>
 
 " Navigation
 nnoremap <Up>       <Nop>
@@ -165,6 +184,9 @@ nnoremap <C-H> <C-W><C-H>
 nnoremap m			:!clear<CR>:M<CR>
 nnoremap M			:!clear<CR>:M run<CR>
 
+" Clear highlighting
+nnoremap \			:noh<CR>
+
 " Leader
 let mapleader = ","
 " Remove trailing whitespace
@@ -175,6 +197,8 @@ nnoremap <leader>e :e $MYVIMRC<CR>
 nnoremap <leader>a :%y+<CR>
 " Source the current file
 nnoremap <leader>s :so %<CR>
+" Open a bash shell
+nnoremap <leader>b :ConqueTermTab bash<CR>
 
 " Change the wrap mode
 nnoremap <leader>mc :call CodeMode()<CR>
