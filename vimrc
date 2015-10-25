@@ -65,6 +65,7 @@ au BufNewFile,BufRead *.nut set filetype=java " Close enough for Squirrel
 au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl setf glsl
 au BufNewFile,BufRead *.kisl set filetype=c
 au BufNewFile,BufRead *.chs set filetype=haskell
+au BufNewFile,BufRead *.ll set filetype=llvm
 
 " Settings for git commit messages
 autocmd Filetype gitcommit setlocal spell textwidth=72
