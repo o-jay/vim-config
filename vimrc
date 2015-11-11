@@ -34,6 +34,13 @@ let g:haskell_indent_do = 3
 let g:haskell_indent_in = 1
 let g:cabal_indent_section = 2
 
+" Hydra settings
+let g:hydra_highlight_numbers           = 1
+let g:hydra_highlight_builtin_types     = 0
+let g:hydra_highlight_builtin_functions = 0
+let g:hydra_highlight_exceptions        = 0
+let g:hydra_highlight_space_errors      = 0
+
 " General settings
 set nofoldenable showcmd ruler number autoindent showmode showmatch
 set nohidden nobackup nowritebackup noswapfile noautowrite title wrap
@@ -66,15 +73,14 @@ au BufNewFile,BufRead *.frag,*.vert,*.fp,*.vp,*.glsl setf glsl
 au BufNewFile,BufRead *.kisl set filetype=c
 au BufNewFile,BufRead *.chs set filetype=haskell
 au BufNewFile,BufRead *.ll set filetype=llvm
+au BufNewFile,BufRead *.hy set filetype=hydra
+au BufNewFile,BufRead *.S.h set filetype=asm
 
 " Settings for git commit messages
 autocmd Filetype gitcommit setlocal spell textwidth=72
 
 " Status line
 set laststatus=2
-
-" Make command
-command! -nargs=* M make! <f-args>
 
 " Search
 set incsearch ignorecase smartcase hlsearch
@@ -182,8 +188,8 @@ nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
 " Make
-nnoremap m			:!clear<CR>:M<CR>
-nnoremap M			:!clear<CR>:M run<CR>
+nnoremap m			:!clear<CR>:! make<CR>
+nnoremap M			:!clear<CR>:! make run<CR>
 
 " Clear highlighting
 nnoremap \			:noh<CR>
