@@ -45,6 +45,7 @@ let g:hydra_highlight_space_errors      = 0
 set nofoldenable showcmd ruler number autoindent showmode showmatch
 set nohidden nobackup nowritebackup noswapfile noautowrite title wrap
 set noerrorbells splitbelow splitright
+set spelllang=en_gb
 
 " Gui options
 if has("gui_running")
@@ -61,7 +62,6 @@ filetype on
 filetype plugin indent on
 syntax enable
 set grepprg=grep\ -nH\ $*
-"let &colorcolumn="80,".join(range(120,500),",")
 let &colorcolumn="80,120"
 highlight ColorColumn ctermbg=DarkGray guibg=#2c2d27
 
@@ -75,6 +75,9 @@ au BufNewFile,BufRead *.chs set filetype=haskell
 au BufNewFile,BufRead *.ll set filetype=llvm
 au BufNewFile,BufRead *.hy set filetype=hydra
 au BufNewFile,BufRead *.S.h set filetype=asm
+au BufNewFile,BufRead *.tex set filetype=tex " Avoid plaintex
+au BufNewFile,BufRead SConstruct set filetype=python
+au BufNewFile,BufRead SConscript set filetype=python
 
 " Settings for git commit messages
 autocmd Filetype gitcommit setlocal spell textwidth=72
@@ -116,13 +119,15 @@ set tabpagemax=50
 
 " Functions for setting wrapping for text editing or code editing
 function! CodeMode()
-	set textwidth=0
-	set wrapmargin=0
+	setlocal textwidth=0
+	setlocal wrapmargin=0
+	setlocal nospell
 endfunction
 
 function! TextMode()
-	set textwidth=80
-	set wrapmargin=80
+	setlocal textwidth=80
+	setlocal wrapmargin=80
+	setlocal spell
 endfunction
 
 " CodeMode by default
@@ -140,12 +145,6 @@ autocmd BufWritePre * :%s/\s\+$//e
 
 " Copy/Paste
 set pastetoggle=<F2>
-
-" Nerd Tree binds
-" nnoremap <C-d>      :NERDTreeFocusToggle<CR>
-" inoremap <C-d>      <Esc>:NERDTreeFocusToggle<CR>
-" nnoremap <C-f>      :NERDTreeTabsToggle<CR>
-" inoremap <C-f>      <Esc>:NERDTreeTabsToggle<CR>
 
 " Escaping
 inoremap jj         <Esc>
@@ -167,10 +166,6 @@ inoremap <C-t>      <Esc>:tabnew<CR>
 " For when you forget to sudo...
 cmap     w!!        w !sudo tee % >/dev/null
 
-" Open a bash shell
-" Note: moved to a leader binding to avoid tmux conflict
-" nnoremap <C-b>    :ConqueTermTab bash<CR>
-
 " Navigation
 nnoremap <Up>       <Nop>
 nnoremap <Down>     <Nop>
@@ -187,10 +182,6 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
-" Make
-nnoremap m			:!clear<CR>:! make<CR>
-nnoremap M			:!clear<CR>:! make run<CR>
-
 " Clear highlighting
 nnoremap \			:noh<CR>
 
@@ -206,7 +197,15 @@ nnoremap <leader>a :%y+<CR>
 nnoremap <leader>s :so %<CR>
 " Open a bash shell
 nnoremap <leader>b :ConqueTermTab bash<CR>
+" Convert Current Line To Title Case
+nnoremap <leader>tc :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:noh<CR>
+" Make, clean and run
+nnoremap <leader>m	:!clear<CR>:! make<CR>
+nnoremap <leader>n	:!clear<CR>:! make run<CR>
+nnoremap <leader>v	:!clear<CR>:! make clean<CR>
+" Spell suggestions
+nnoremap <leader>z z=
 
 " Change the wrap mode
-nnoremap <leader>mc :call CodeMode()<CR>
-nnoremap <leader>mt :call TextMode()<CR>
+nnoremap <leader>wmc :call CodeMode()<CR>
+nnoremap <leader>wmt :call TextMode()<CR>
