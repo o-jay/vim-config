@@ -209,3 +209,19 @@ nnoremap <leader>z z=
 " Change the wrap mode
 nnoremap <leader>wmc :call CodeMode()<CR>
 nnoremap <leader>wmt :call TextMode()<CR>
+
+" Bool toggle
+function! BoolToggle()
+	let thisword = expand("<cword>")
+	if thisword ==# "true"
+		execute "normal! viwo\<esc>dwifalse \<esc>b"
+	elseif thisword ==# "false"
+		execute "normal! viwo\<esc>dwitrue \<esc>b"
+	elseif thisword ==# "TRUE"
+		execute "normal! viwo\<esc>dwiFALSE \<esc>b"
+	elseif thisword ==# "FALSE"
+		execute "normal! viwo\<esc>dwiTRUE \<esc>b"
+	endif
+endfunction
+
+nnoremap ^ :call BoolToggle()<CR>
