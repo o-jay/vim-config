@@ -1,7 +1,9 @@
 function! LatexMake()
+	" exe '!rubber --into=' . shellescape(expand('%:p:h'), 1) .
 	exe '!pdflatex -output-directory=' . shellescape(expand('%:p:h'), 1) .
 		\ ' ' . expand('%') . ' && rm -f ' .
 		\ shellescape(expand('%:r'), 1) . '.log ' .
+		\ shellescape(expand('%:r'), 1) . '.toc ' .
 		\ shellescape(expand('%:r'), 1) . '.aux '
 endfunction
 
@@ -12,6 +14,7 @@ endfunction
 function! LatexClean()
 	exe '!rm -f ' . shellescape(expand('%:r'), 1) . '.pdf ' .
 		\ shellescape(expand('%:r'), 1) . '.log ' .
+		\ shellescape(expand('%:r'), 1) . '.toc ' .
 		\ shellescape(expand('%:r'), 1) . '.aux '
 endfunction
 
