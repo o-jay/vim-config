@@ -125,8 +125,8 @@ function! CodeMode()
 endfunction
 
 function! TextMode()
-	setlocal textwidth=80
-	setlocal wrapmargin=80
+	setlocal textwidth=79
+	setlocal wrapmargin=79
 	setlocal spell
 endfunction
 
