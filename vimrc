@@ -1,4 +1,4 @@
-" Vim, not Vi
+" Vim, not Vi. Ignored by nvim.
 set nocompatible
 
 " Plugins
@@ -42,6 +42,7 @@ let g:hydra_highlight_exceptions        = 0
 let g:hydra_highlight_space_errors      = 0
 
 " General settings
+" Some settings aren't used in nvim as they're the defaults
 set nofoldenable showcmd ruler number autoindent showmode showmatch
 set nohidden nobackup nowritebackup noswapfile noautowrite title wrap
 set noerrorbells splitbelow splitright
@@ -191,12 +192,16 @@ let mapleader = ","
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 " Edit vimrc
 nnoremap <leader>e :e $MYVIMRC<CR>
-" Select all
+" Copy all
 nnoremap <leader>a :%y+<CR>
 " Source the current file
 nnoremap <leader>s :so %<CR>
 " Open a bash shell
-nnoremap <leader>b :ConqueTermTab bash<CR>
+if has('nvim')
+	nnoremap <leader>b :tabnew<CR>:terminal<CR>
+else
+	nnoremap <leader>b :ConqueTermTab bash<CR>
+endif
 " Convert Current Line To Title Case
 nnoremap <leader>tc :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:noh<CR>
 " Make, clean and run
