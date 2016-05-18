@@ -205,10 +205,11 @@ else
 endif
 " Convert Current Line To Title Case
 nnoremap <leader>tc :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:noh<CR>
-" Make, clean and run
+" Make targets
 nnoremap <leader>m	:!clear<CR>:! make<CR>
 nnoremap <leader>n	:!clear<CR>:! make run<CR>
-nnoremap <leader>v	:!clear<CR>:! make clean<CR>
+nnoremap <leader>v	:!clear<CR>:! make runv<CR>
+nnoremap <leader>x	:!clear<CR>:! make clean<CR>
 " Spell suggestions
 nnoremap <leader>z z=
 
