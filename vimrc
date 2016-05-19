@@ -205,7 +205,7 @@ else
 endif
 " Convert Current Line To Title Case
 nnoremap <leader>tc :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:noh<CR>
-" Make targets
+" Make, clean and run
 nnoremap <leader>m	:!clear<CR>:! make<CR>
 nnoremap <leader>n	:!clear<CR>:! make run<CR>
 nnoremap <leader>v	:!clear<CR>:! make runv<CR>
@@ -232,3 +232,14 @@ function! BoolToggle()
 endfunction
 
 nnoremap ^ :call BoolToggle()<CR>
+
+" Line number toggle
+function! NumberToggle()
+	if(&relativenumber == 1)
+		set norelativenumber
+	else
+		set relativenumber
+	endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<CR>
