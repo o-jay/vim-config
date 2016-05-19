@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Simple shell script to grab .vimrc and .vim from the system and update the
-# repository by Ollie Etherington
+# repository
 
 # File names
 LOCALRC=vimrc
@@ -32,7 +32,6 @@ if [ -d $DIR ];
 then
 	rm -rf $LOCALDIR
 	cp -r $DIR $LOCALDIR
-	rm -f $LOCALDIR/init.vim
 	echo -e "${GREEN}Updated ${LOCALDIR} from system dir ${DIR}${NC}"
 else
 	echo -e "${RED}${DIR} not found - not updating local dir ${LOCALDIR}${NC}"

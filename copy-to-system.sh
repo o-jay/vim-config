@@ -39,12 +39,5 @@ fi
 cp $LOCALRC $RC
 cp -r $LOCALDIR $DIR
 
-# Create sym links for neovim
-if [ ! -d "~/.config/nvim" ]; then
-	mkdir -p ~/.config
-	ln -s ~/.vim ~/.config/nvim
-	ln -s ~/.vimrc ~/.config/nvim/init.vim
-fi
-
 # We're done
 echo Copied local files to system
