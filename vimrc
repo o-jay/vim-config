@@ -43,8 +43,8 @@ let g:hydra_highlight_space_errors      = 0
 
 " General settings
 " Some settings aren't used in nvim as they're the defaults
-set nofoldenable showcmd ruler number autoindent showmode showmatch
-set nohidden nobackup nowritebackup noswapfile noautowrite title wrap
+set nofoldenable showcmd ruler number relativenumber autoindent showmode
+set showmatch nohidden nobackup nowritebackup noswapfile noautowrite title wrap
 set noerrorbells splitbelow splitright
 set spelllang=en_gb
 
@@ -102,6 +102,10 @@ autocmd FileType lisp setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 autocmd FileType scheme setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
+" Encryption
+set cm=blowfish2
+autocmd BufReadPost * if &key != "" | set noswapfile nowritebackup noundofile viminfo= nobackup noshelltemp history=0 secure | endif
+
 " Mouse
 set mouse=a
 set nomousehide
@@ -112,7 +116,6 @@ set backspace=2
 set scrolloff=10
 set modelines=0
 set clipboard=unnamedplus
-"set clipboard=unnamed
 set showtabline=2
 set history=1000
 set undolevels=1000
