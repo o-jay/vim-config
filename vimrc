@@ -43,7 +43,7 @@ let g:hydra_highlight_space_errors      = 0
 
 " General settings
 " Some settings aren't used in nvim as they're the defaults
-set nofoldenable showcmd ruler number relativenumber autoindent showmode
+set nofoldenable showcmd ruler number norelativenumber autoindent showmode
 set showmatch nohidden nobackup nowritebackup noswapfile noautowrite title wrap
 set noerrorbells splitbelow splitright
 set spelllang=en_gb
