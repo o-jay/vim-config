@@ -1,201 +1,311 @@
 " Vim syntax file
-" Language:		Hydra
-" Maintainer:	Ollie Etherington <oje@hydra-lang.org>
-" Last Change:	2015 Nov 7
+" Language:	Hydra
+" Maintainer:	Ollie Etherington <ollie.etherington@gmail.com>
+" Last Change:	2017 Feb 28
 
-" PRIMARILY BASED ON NIM.VIM WITH SOME TAKEN FROM RUST.VIM
-if version < 600
-  syntax clear
-elseif exists("b:current_syntax")
+" Quit when a (custom) syntax file was already loaded
+if exists("b:current_syntax")
   finish
 endif
 
-" Keep user-supplied options
-if !exists("hydra_highlight_numbers")
-  let hydra_highlight_numbers = 1
-endif
-if !exists("hydra_highlight_builtin_types")
-  let hydra_highlight_builtin_types = 1
-endif
-if !exists("hydra_highlight_builtin_functions")
-  let hydra_highlight_builtin_functions = 1
-endif
-if !exists("hydra_highlight_exceptions")
-  let hydra_highlight_exceptions = 1
-endif
-if !exists("hydra_highlight_space_errors")
-  let hydra_highlight_space_errors = 1
-endif
+let s:cpo_save = &cpo
+set cpo&vim
 
-if exists("hydra_highlight_all")
-  let hydra_highlight_numbers           = 1
-  let hydra_highlight_builtin_types     = 1
-  let hydra_highlight_builtin_functions = 1
-  let hydra_highlight_exceptions        = 1
-  let hydra_highlight_space_errors      = 1
-endif
+let s:ft = matchstr(&ft, '^\([^.]\)\+')
 
-syn region hydraBrackets       contained extend keepend matchgroup=Bold start=+\(\\\)\@<!\[+ end=+]\|$+ skip=+\\\s*$\|\(\\\)\@<!\\]+ contains=@tclCommandCluster
+" A bunch of useful C keywords
+syn keyword	cStatement	break return continue fn impl implicit import
+syn keyword	cLabel		case default and or not let in imm mut
+syn keyword	cConditional	if else switch
+syn keyword	cRepeat		while for do this
 
-syn region hydraFunction	   start="`" end="`"
+syn keyword	cTodo		contained TODO FIXME XXX
 
-syn keyword hydraKeyword       addr asm atomic
-syn keyword hydraKeyword       block break
-syn keyword hydraKeyword       case cast continue
-syn keyword hydraKeyword       do delete default
-syn keyword hydraKeyword       elif else end except
-syn keyword hydraKeyword       finally for from
-syn keyword hydraKeyword       generic
-syn keyword hydraKeyword       if import in indistinct inline
-syn keyword hydraKeyword       let
-syn keyword hydraKeyword       mixin
-syn keyword hydraKeyword       nil
-syn keyword hydraKeyword       macro template fn nextgroup=hydraFunction skipwhite
-syn keyword hydraKeyword       new
-syn keyword hydraKeyword       ptr
-syn keyword hydraKeyword       ref return renew
-syn keyword hydraKeyword       static shared
-syn keyword hydraKeyword       try throw this
-syn keyword hydraKeyword       uniq
-syn keyword hydraKeyword       when while
-syn keyword hydraKeyword       yield
+" It's easy to accidentally add a space after a backslash that was intended
+" for line continuation.  Some compilers allow it, which makes it
+" unpredictable and should be avoided.
+syn match	cBadContinuation contained "\\\s\+$"
 
-syn keyword hydraStorageClass	constructor destructor enum	lambda struct mut module alias
-syn keyword hydraStorageClass	instance type iterator class nextgroup=hydraFunction skipwhite
+" cCommentGroup allows adding matches for special things in comments
+syn cluster	cCommentGroup	contains=cTodo,cBadContinuation
 
-syn match   hydraFunction      "[a-z][a-zA-Z0-9_]*" contained
-syn match   hydraClass         "[A-Z][a-zA-Z0-9_]*" contained
-syn keyword hydraRepeat        for while
-syn keyword hydraConditional   if elif else switch case when
-syn keyword hydraBoolean       true false
-
-" BEGIN TAKEN FROM RUST.VIM
-syn region hydraCommentLine                                        start="//"                      end="$"   contains=hydraTodo,@Spell
-syn region hydraCommentLineDoc                                     start="//\%(//\@!\|!\)"         end="$"   contains=hydraTodo,@Spell
-syn region hydraCommentBlock    matchgroup=hydraCommentBlock        start="/\*\%(!\|\*[*/]\@!\)\@!" end="\*/" contains=hydraTodo,hydraCommentBlockNest,@Spell
-syn region hydraCommentBlockDoc matchgroup=hydraCommentBlockDoc     start="/\*\%(!\|\*[*/]\@!\)"    end="\*/" contains=hydraTodo,hydraCommentBlockDocNest,@Spell
-syn region hydraCommentBlockNest matchgroup=hydraCommentBlock       start="/\*"                     end="\*/" contains=hydraTodo,hydraCommentBlockNest,@Spell contained transparent
-syn region hydraCommentBlockDocNest matchgroup=hydraCommentBlockDoc start="/\*"                     end="\*/" contains=hydraTodo,hydraCommentBlockDocNest,@Spell contained transparent
-" FIXME: this is a really ugly and not fully correct implementation. Most
-" importantly, a case like ``/* */*`` should have the final ``*`` not being in
-" a comment, but in practice at present it leaves comments open two levels
-" deep. But as long as you stay away from that particular case, I *believe*
-" the highlighting is correct. Due to the way Vim's syntax engine works
-" (greedy for start matches, unlike hydra's tokeniser which is searching for
-" the earliest-starting match, start or end), I believe this cannot be solved.
-" Oh you who would fix it, don't bother with things like duplicating the Block
-" rules and putting ``\*\@<!`` at the start of them; it makes it worse, as
-" then you must deal with cases like ``/*/**/*/``. And don't try making it
-" worse with ``\%(/\@<!\*\)\@<!``, either...
-
-syn keyword hydraTodo contained TODO FIXME XXX NB NOTE
-" END TAKEN FROM RUST.VIM
-
-" Strings
-syn region hydraString start=+'+ skip=+\\\\\|\\'\|\\$+ excludenl end=+'+ end=+$+ keepend contains=hydraEscape,hydraEscapeError,@Spell
-syn region hydraString start=+"+ skip=+\\\\\|\\"\|\\$+ excludenl end=+"+ end=+$+ keepend contains=hydraEscape,hydraEscapeError,@Spell
-syn region hydraString start=+"""+ end=+"""+ keepend contains=hydraEscape,hydraEscapeError,@Spell
-syn region hydraRawString matchgroup=Normal start=+[rR]"+ end=+"+ skip=+\\\\\|\\"+ contains=@Spell
-
-syn match  hydraEscape		+\\[abfnrtv'"\\]+ contained
-syn match  hydraEscape		"\\\o\{1,3}" contained
-syn match  hydraEscape		"\\x\x\{2}" contained
-syn match  hydraEscape		"\(\\u\x\{4}\|\\U\x\{8}\)" contained
-syn match  hydraEscape		"\\$"
-
-syn match hydraEscapeError "\\x\x\=\X" display contained
-
-if hydra_highlight_numbers == 1
-  " numbers (including longs and complex)
-  syn match   hydraNumber	"\v<0x\x+(\'(i|I|f|F|u|U)(8|16|32|64))?>"
-  syn match   hydraNumber	"\v<[0-9_]+(\'(i|I|f|F|u|U)(8|16|32|64))?>"
-  syn match   hydraNumber	"\v[0-9]\.[0-9_]+([eE][+-]=[0-9_]+)=>"
-  syn match   hydraNumber	"\v<[0-9_]+(\.[0-9_]+)?([eE][+-]?[0-9_]+)?(\'(f|F)(32|64))?>"
+" String and Character constants
+" Highlight special characters (those which have a backslash) differently
+syn match	cSpecial	display contained "\\\(x\x\+\|\o\{1,3}\|.\|$\)"
+if !exists("c_no_utf")
+  syn match	cSpecial	display contained "\\\(u\x\{4}\|U\x\{8}\)"
 endif
 
-if hydra_highlight_builtin_types == 1
-  " builtin types and objects, not really part of the syntax
-  syn keyword hydraBuiltin Int Int8 Int16 Int32 Int64 Int128
-  syn keyword hydraBuiltin UInt UInt8 UInt16 UInt32 UInt64 UInt128
-  syn keyword hydraBuiltin Float Double Float32 Float64 Float80
-  syn keyword hydraBuiltin Bool Char UChar Byte UByte String
-  syn keyword hydraBuiltin Lengthable ArrayLike Ord
+" cCppString: same as cString, but ends at end of line
+if s:ft ==# "cpp" && !exists("cpp_no_cpp11") && !exists("c_no_cformat")
+  " ISO C++11
+  syn region	cString		start=+\(L\|u\|u8\|U\|R\|LR\|u8R\|uR\|UR\)\="+ skip=+\\\\\|\\"+ end=+"+ contains=cSpecial,cFormat,@Spell extend
+  syn region 	cCppString	start=+\(L\|u\|u8\|U\|R\|LR\|u8R\|uR\|UR\)\="+ skip=+\\\\\|\\"\|\\$+ excludenl end=+"+ end='$' contains=cSpecial,cFormat,@Spell
+elseif s:ft ==# "c" && !exists("c_no_c11") && !exists("c_no_cformat")
+  " ISO C99
+  syn region	cString		start=+\%(L\|U\|u8\)\="+ skip=+\\\\\|\\"+ end=+"+ contains=cSpecial,cFormat,@Spell extend
+  syn region	cCppString	start=+\%(L\|U\|u8\)\="+ skip=+\\\\\|\\"\|\\$+ excludenl end=+"+ end='$' contains=cSpecial,cFormat,@Spell
+else
+  " older C or C++
+  syn match	cFormat		display "%%" contained
+  syn region	cString		start=+L\="+ skip=+\\\\\|\\"+ end=+"+ contains=cSpecial,cFormat,@Spell extend
+  syn region	cCppString	start=+L\="+ skip=+\\\\\|\\"\|\\$+ excludenl end=+"+ end='$' contains=cSpecial,cFormat,@Spell
 endif
 
-if hydra_highlight_builtin_functions == 1
-  " builtin functions, not really part of the syntax
-  syn keyword hydraBuiltin Compiler neginf inf nan stdin stdout stderr assert
-  syn keyword hydraBuiltin sizeof typeof getter setter
-  syn keyword hydraBuiltin len clear first last append pred succ clone
-  syn keyword hydraBuiltin inc dec ord chr abs min max
-  syn keyword hydraBuiltin range irange
-  syn match   hydraBuiltin "\<contains\>"
+syn cluster	cStringGroup	contains=cCppString,cCppSkip
+
+syn match	cCharacter	"L\='[^\\]'"
+syn match	cCharacter	"L'[^']*'" contains=cSpecial
+if exists("c_gnu")
+  syn match	cSpecialError	"L\='\\[^'\"?\\abefnrtv]'"
+  syn match	cSpecialCharacter "L\='\\['\"?\\abefnrtv]'"
+else
+  syn match	cSpecialError	"L\='\\[^'\"?\\abfnrtv]'"
+  syn match	cSpecialCharacter "L\='\\['\"?\\abfnrtv]'"
 endif
+syn match	cSpecialCharacter display "L\='\\\o\{1,3}'"
+syn match	cSpecialCharacter display "'\\x\x\{1,2}'"
+syn match	cSpecialCharacter display "L'\\x\x\+'"
 
-if hydra_highlight_exceptions == 1
-  " builtin exceptions and warnings
-  syn keyword hydraException EBase EFormat
-endif
-
-if hydra_highlight_space_errors == 1
-  " trailing whitespace
-  syn match   hydraSpaceError   display excludenl "\S\s\+$"ms=s+1
-endif
-
-syn sync match hydraSync grouphere NONE "):$"
-syn sync maxlines=200
-syn sync minlines=2000
-
-if version >= 508 || !exists("did_hydra_syn_inits")
-  if version <= 508
-    let did_hydra_syn_inits = 1
-    command -nargs=+ HiLink hi link <args>
+if (s:ft ==# "c" && !exists("c_no_c11")) || (s:ft ==# "cpp" && !exists("cpp_no_cpp11"))
+  " ISO C11 or ISO C++ 11
+  if exists("c_no_cformat")
+    syn region	cString		start=+\%(U\|u8\=\)"+ skip=+\\\\\|\\"+ end=+"+ contains=cSpecial,@Spell extend
   else
-    command -nargs=+ HiLink hi def link <args>
+    syn region	cString		start=+\%(U\|u8\=\)"+ skip=+\\\\\|\\"+ end=+"+ contains=cSpecial,cFormat,@Spell extend
   endif
-
-  " The default methods for highlighting.  Can be overridden later
-  HiLink hydraBrackets				Operator
-  HiLink hydraKeyword				Keyword
-  HiLink hydraStorageClass			StorageClass
-  HiLink hydraFunction				Function
-  HiLink hydraConditional			Conditional
-  HiLink hydraRepeat				Repeat
-  HiLink hydraString				String
-  HiLink hydraRawString				String
-  HiLink hydraBoolean				Boolean
-  HiLink hydraEscape				Special
-  HiLink hydraPreCondit				PreCondit
-  HiLink hydraCommentLine			Comment
-  HiLink hydraCommentLineDoc		Comment
-  HiLink hydraCommentBlock			Comment
-  HiLink hydraCommentBlockDoc		Comment
-  HiLink hydraCommentBlockNest		Comment
-  HiLink hydraCommentBlockDocNest	Comment
-  HiLink hydraTodo					Todo
-  HiLink hydraDecorator				Define
-
-  if hydra_highlight_numbers == 1
-    HiLink hydraNumber	Number
+  syn match	cCharacter	"[Uu]'[^\\]'"
+  syn match	cCharacter	"[Uu]'[^']*'" contains=cSpecial
+  if exists("c_gnu")
+    syn match	cSpecialError	"[Uu]'\\[^'\"?\\abefnrtv]'"
+    syn match	cSpecialCharacter "[Uu]'\\['\"?\\abefnrtv]'"
+  else
+    syn match	cSpecialError	"[Uu]'\\[^'\"?\\abfnrtv]'"
+    syn match	cSpecialCharacter "[Uu]'\\['\"?\\abfnrtv]'"
   endif
-
-  if hydra_highlight_builtin_types == 1
-    HiLink hydraBuiltin	Number
-  endif
-
-  if hydra_highlight_builtin_functions == 1
-    HiLink hydraBuiltin	Number
-  endif
-
-  if hydra_highlight_exceptions == 1
-    HiLink hydraException	Exception
-  endif
-
-  if hydra_highlight_space_errors == 1
-    HiLink hydraSpaceError	Error
-  endif
-
-  delcommand HiLink
+  syn match	cSpecialCharacter display "[Uu]'\\\o\{1,3}'"
+  syn match	cSpecialCharacter display "[Uu]'\\x\x\+'"
 endif
+
+"when wanted, highlight trailing white space
+if exists("c_space_errors")
+  if !exists("c_no_trail_space_error")
+    syn match	cSpaceError	display excludenl "\s\+$"
+  endif
+  if !exists("c_no_tab_space_error")
+    syn match	cSpaceError	display " \+\t"me=e-1
+  endif
+endif
+
+" This should be before cErrInParen to avoid problems with #define ({ xxx })
+if exists("c_curly_error")
+  syn match cCurlyError "}"
+  syn region	cBlock		start="{" end="}" contains=ALLBUT,cBadBlock,cCurlyError,@cParenGroup,cErrInParen,cCppParen,cErrInBracket,cCppBracket,@cStringGroup,@Spell fold
+else
+  syn region	cBlock		start="{" end="}" transparent fold
+endif
+
+" Catch errors caused by wrong parenthesis and brackets.
+" Also accept <% for {, %> for }, <: for [ and :> for ] (C99)
+" But avoid matching <::.
+syn cluster	cParenGroup	contains=cParenError,cIncluded,cSpecial,cCommentSkip,cCommentString,cComment2String,@cCommentGroup,cCommentStartError,cUserLabel,cBitField,cOctalZero,@cCppOutInGroup,cFormat,cNumber,cFloat,cOctal,cOctalError,cNumbersCom
+if exists("c_no_curly_error")
+  if s:ft ==# 'cpp' && !exists("cpp_no_cpp11")
+    syn region	cParen		transparent start='(' end=')' contains=ALLBUT,@cParenGroup,cCppParen,@cStringGroup,@Spell
+    " cCppParen: same as cParen but ends at end-of-line; used in cDefine
+    syn region	cCppParen	transparent start='(' skip='\\$' excludenl end=')' end='$' contained contains=ALLBUT,@cParenGroup,cParen,cString,@Spell
+    syn match	cParenError	display ")"
+    syn match	cErrInParen	display contained "^^<%\|^%>"
+  else
+    syn region	cParen		transparent start='(' end=')' end='}'me=s-1 contains=ALLBUT,cBlock,@cParenGroup,cCppParen,@cStringGroup,@Spell
+    " cCppParen: same as cParen but ends at end-of-line; used in cDefine
+    syn region	cCppParen	transparent start='(' skip='\\$' excludenl end=')' end='$' contained contains=ALLBUT,@cParenGroup,cParen,cString,@Spell
+    syn match	cParenError	display ")"
+    syn match	cErrInParen	display contained "^[{}]\|^<%\|^%>"
+  endif
+elseif exists("c_no_bracket_error")
+  if s:ft ==# 'cpp' && !exists("cpp_no_cpp11")
+    syn region	cParen		transparent start='(' end=')' contains=ALLBUT,@cParenGroup,cCppParen,@cStringGroup,@Spell
+    " cCppParen: same as cParen but ends at end-of-line; used in cDefine
+    syn region	cCppParen	transparent start='(' skip='\\$' excludenl end=')' end='$' contained contains=ALLBUT,@cParenGroup,cParen,cString,@Spell
+    syn match	cParenError	display ")"
+    syn match	cErrInParen	display contained "<%\|%>"
+  else
+    syn region	cParen		transparent start='(' end=')' end='}'me=s-1 contains=ALLBUT,cBlock,@cParenGroup,cCppParen,@cStringGroup,@Spell
+    " cCppParen: same as cParen but ends at end-of-line; used in cDefine
+    syn region	cCppParen	transparent start='(' skip='\\$' excludenl end=')' end='$' contained contains=ALLBUT,@cParenGroup,cParen,cString,@Spell
+    syn match	cParenError	display ")"
+    syn match	cErrInParen	display contained "[{}]\|<%\|%>"
+  endif
+else
+  if s:ft ==# 'cpp' && !exists("cpp_no_cpp11")
+    syn region	cParen		transparent start='(' end=')' contains=ALLBUT,@cParenGroup,cCppParen,cErrInBracket,cCppBracket,@cStringGroup,@Spell
+    " cCppParen: same as cParen but ends at end-of-line; used in cDefine
+    syn region	cCppParen	transparent start='(' skip='\\$' excludenl end=')' end='$' contained contains=ALLBUT,@cParenGroup,cErrInBracket,cParen,cBracket,cString,@Spell
+    syn match	cParenError	display "[\])]"
+    syn match	cErrInParen	display contained "<%\|%>"
+    syn region	cBracket	transparent start='\[\|<::\@!' end=']\|:>' contains=ALLBUT,@cParenGroup,cErrInParen,cCppParen,cCppBracket,@cStringGroup,@Spell
+  else
+    syn region	cParen		transparent start='(' end=')' end='}'me=s-1 contains=ALLBUT,cBlock,@cParenGroup,cCppParen,cErrInBracket,cCppBracket,@cStringGroup,@Spell
+    " cCppParen: same as cParen but ends at end-of-line; used in cDefine
+    syn region	cCppParen	transparent start='(' skip='\\$' excludenl end=')' end='$' contained contains=ALLBUT,@cParenGroup,cErrInBracket,cParen,cBracket,cString,@Spell
+    syn match	cParenError	display "[\])]"
+    syn match	cErrInParen	display contained "[\]{}]\|<%\|%>"
+    syn region	cBracket	transparent start='\[\|<::\@!' end=']\|:>' end='}'me=s-1 contains=ALLBUT,cBlock,@cParenGroup,cErrInParen,cCppParen,cCppBracket,@cStringGroup,@Spell
+  endif
+  " cCppBracket: same as cParen but ends at end-of-line; used in cDefine
+  syn region	cCppBracket	transparent start='\[\|<::\@!' skip='\\$' excludenl end=']\|:>' end='$' contained contains=ALLBUT,@cParenGroup,cErrInParen,cParen,cBracket,cString,@Spell
+  syn match	cErrInBracket	display contained "[);{}]\|<%\|%>"
+endif
+
+if s:ft ==# 'c' || exists("cpp_no_cpp11")
+  syn region	cBadBlock	keepend start="{" end="}" contained containedin=cParen,cBracket,cBadBlock transparent fold
+endif
+
+"integer number, or floating point number without a dot and with "f".
+syn case ignore
+syn match	cNumbers	display transparent "\<\d\|\.\d" contains=cNumber,cFloat,cOctalError,cOctal
+" Same, but without octal error (for comments)
+syn match	cNumbersCom	display contained transparent "\<\d\|\.\d" contains=cNumber,cFloat,cOctal
+syn match	cNumber		display contained "\d\+\(u\=l\{0,2}\|ll\=u\)\>"
+"hex number
+syn match	cNumber		display contained "0x\x\+\(u\=l\{0,2}\|ll\=u\)\>"
+" Flag the first zero of an octal number as something special
+syn match	cOctal		display contained "0\o\+\(u\=l\{0,2}\|ll\=u\)\>" contains=cOctalZero
+syn match	cOctalZero	display contained "\<0"
+syn match	cFloat		display contained "\d\+f"
+"floating point number, with dot, optional exponent
+syn match	cFloat		display contained "\d\+\.\d*\(e[-+]\=\d\+\)\=[fl]\="
+"floating point number, starting with a dot, optional exponent
+syn match	cFloat		display contained "\.\d\+\(e[-+]\=\d\+\)\=[fl]\=\>"
+"floating point number, without dot, with exponent
+syn match	cFloat		display contained "\d\+e[-+]\=\d\+[fl]\=\>"
+if !exists("c_no_c99")
+  "hexadecimal floating point number, optional leading digits, with dot, with exponent
+  syn match	cFloat		display contained "0x\x*\.\x\+p[-+]\=\d\+[fl]\=\>"
+  "hexadecimal floating point number, with leading digits, optional dot, with exponent
+  syn match	cFloat		display contained "0x\x\+\.\=p[-+]\=\d\+[fl]\=\>"
+endif
+
+" flag an octal number with wrong digits
+syn match	cOctalError	display contained "0\o*[89]\d*"
+syn case match
+
+if exists("c_comment_strings")
+  " A comment can contain cString, cCharacter and cNumber.
+  " But a "*/" inside a cString in a cComment DOES end the comment!  So we
+  " need to use a special type of cString: cCommentString, which also ends on
+  " "*/", and sees a "*" at the start of the line as comment again.
+  " Unfortunately this doesn't very well work for // type of comments :-(
+  syn match	cCommentSkip	contained "^\s*\*\($\|\s\+\)"
+  syn region cCommentString	contained start=+L\=\\\@<!"+ skip=+\\\\\|\\"+ end=+"+ end=+\*/+me=s-1 contains=cSpecial,cCommentSkip
+  syn region cComment2String	contained start=+L\=\\\@<!"+ skip=+\\\\\|\\"+ end=+"+ end="$" contains=cSpecial
+  syn region  cCommentL	start="//" skip="\\$" end="$" keepend contains=@cCommentGroup,cComment2String,cCharacter,cNumbersCom,cSpaceError,@Spell
+  if exists("c_no_comment_fold")
+    " Use "extend" here to have preprocessor lines not terminate halfway a
+    " comment.
+    syn region cComment	matchgroup=cCommentStart start="/\*" end="\*/" contains=@cCommentGroup,cCommentStartError,cCommentString,cCharacter,cNumbersCom,cSpaceError,@Spell extend
+  else
+    syn region cComment	matchgroup=cCommentStart start="/\*" end="\*/" contains=@cCommentGroup,cCommentStartError,cCommentString,cCharacter,cNumbersCom,cSpaceError,@Spell fold extend
+  endif
+else
+  syn region	cCommentL	start="//" skip="\\$" end="$" keepend contains=@cCommentGroup,cSpaceError,@Spell
+  if exists("c_no_comment_fold")
+    syn region	cComment	matchgroup=cCommentStart start="/\*" end="\*/" contains=@cCommentGroup,cCommentStartError,cSpaceError,@Spell extend
+  else
+    syn region	cComment	matchgroup=cCommentStart start="/\*" end="\*/" contains=@cCommentGroup,cCommentStartError,cSpaceError,@Spell fold extend
+  endif
+endif
+" keep a // comment separately, it terminates a preproc. conditional
+syn match	cCommentError	display "\*/"
+syn match	cCommentStartError display "/\*"me=e-1 contained
+
+" TODO TODO set type to be anu word stating with uppercase
+syn keyword	cOperator	sizeof
+if exists("c_gnu")
+  syn keyword	cStatement	__asm__
+  syn keyword	cOperator	typeof __real__ __imag__
+endif
+syn keyword	cType		int long short char void
+syn keyword	cType		signed unsigned float double
+
+syn keyword	cStructure	struct class union enum
+syn keyword	cStorageClass	ccall variadic using
+
+syn keyword cConstant len clone
+
+if exists("c_minlines")
+  let b:c_minlines = c_minlines
+else
+  if !exists("c_no_if0")
+    let b:c_minlines = 50	" #if 0 constructs can be long
+  else
+    let b:c_minlines = 15	" mostly for () constructs
+  endif
+endif
+if exists("c_curly_error")
+  syn sync fromstart
+else
+  exec "syn sync ccomment cComment minlines=" . b:c_minlines
+endif
+
+" Define the default highlighting.
+" Only used when an item doesn't have highlighting yet
+hi def link cFormat		cSpecial
+hi def link cCppString		cString
+hi def link cCommentL		cComment
+hi def link cCommentStart	cComment
+hi def link cLabel		Label
+hi def link cUserLabel		Label
+hi def link cConditional	Conditional
+hi def link cRepeat		Repeat
+hi def link cCharacter		Character
+hi def link cSpecialCharacter	cSpecial
+hi def link cNumber		Number
+hi def link cOctal		Number
+hi def link cOctalZero		PreProc	 " link this to Error if you want
+hi def link cFloat		Float
+hi def link cOctalError		cError
+hi def link cParenError		cError
+hi def link cErrInParen		cError
+hi def link cErrInBracket	cError
+hi def link cCommentError	cError
+hi def link cCommentStartError	cError
+hi def link cSpaceError		cError
+hi def link cSpecialError	cError
+hi def link cCurlyError		cError
+hi def link cOperator		Operator
+hi def link cStructure		Structure
+hi def link cStorageClass	StorageClass
+hi def link cInclude		Include
+hi def link cPreProc		PreProc
+hi def link cDefine		Macro
+hi def link cIncluded		cString
+hi def link cError		Error
+hi def link cStatement		Statement
+hi def link cCppInWrapper	cCppOutWrapper
+hi def link cCppOutWrapper	cPreCondit
+hi def link cPreConditMatch	cPreCondit
+hi def link cPreCondit		PreCondit
+hi def link cType		Type
+hi def link cConstant		Constant
+hi def link cCommentString	cString
+hi def link cComment2String	cString
+hi def link cCommentSkip	cComment
+hi def link cString		String
+hi def link cComment		Comment
+hi def link cSpecial		SpecialChar
+hi def link cTodo		Todo
+hi def link cBadContinuation	Error
+hi def link cCppOutSkip		cCppOutIf2
+hi def link cCppInElse2		cCppOutIf2
+hi def link cCppOutIf2		cCppOut
+hi def link cCppOut		Comment
 
 let b:current_syntax = "hydra"
+
+unlet s:ft
+
+let &cpo = s:cpo_save
+unlet s:cpo_save
+" vim: ts=8
