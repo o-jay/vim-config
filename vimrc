@@ -1,15 +1,10 @@
-" Vim, not Vi. Ignored by nvim.
+" Vim, not Vi
 set nocompatible
 
 " Plugins
 filetype off " Gets turned on later, but it screws up pathogen if it's on now
 execute pathogen#infect()
 Helptags
-
-" Nerd tree settings
-let g:nerdtree_tabs_open_on_console_startup=0
-let g:nerdtree_tabs_open_on_gui_startup=0
-let g:nerdtree_tabs_smart_startup_focus=2
 
 " Nerd commenter settings
 let g:NERDSpaceDelims=1
@@ -35,18 +30,37 @@ let g:haskell_indent_in = 1
 let g:cabal_indent_section = 2
 
 " Hydra settings
-let g:hydra_highlight_numbers           = 1
-let g:hydra_highlight_builtin_types     = 0
-let g:hydra_highlight_builtin_functions = 0
-let g:hydra_highlight_exceptions        = 0
-let g:hydra_highlight_space_errors      = 0
+"let g:hydra_highlight_numbers           = 1
+"let g:hydra_highlight_builtin_types     = 0
+"let g:hydra_highlight_builtin_functions = 0
+"let g:hydra_highlight_exceptions        = 0
+"let g:hydra_highlight_space_errors      = 0
 
 " General settings
 " Some settings aren't used in nvim as they're the defaults
-set nofoldenable showcmd ruler number norelativenumber autoindent showmode
+set nofoldenable showcmd ruler number relativenumber autoindent showmode
 set showmatch nohidden nobackup nowritebackup noswapfile noautowrite title wrap
-set noerrorbells splitbelow splitright
+set noerrorbells splitbelow splitright wildmenu lazyredraw autochdir
 set spelllang=en_gb
+set encoding=utf8
+set ffs=unix,dos,mac
+
+" Files ignored for completion
+set wildignore=*.o,*~,~*,*.pyc,vgcore*
+if has("win16") || has("win32")
+    set wildignore+=.git\*,.hg\*,.svn\*
+else
+    set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+endif
+
+" Fix ctrl+arrows in tmux
+if &term =~ '^screen'
+    " tmux will send xterm-style keys when its xterm-keys option is on
+    execute "set <xUp>=\e[1;*A"
+    execute "set <xDown>=\e[1;*B"
+    execute "set <xRight>=\e[1;*C"
+    execute "set <xLeft>=\e[1;*D"
+endif
 
 " Gui options
 if has("gui_running")
@@ -77,8 +91,11 @@ au BufNewFile,BufRead *.ll set filetype=llvm
 au BufNewFile,BufRead *.hy set filetype=hydra
 au BufNewFile,BufRead *.S.h set filetype=asm
 au BufNewFile,BufRead *.tex set filetype=tex " Avoid plaintex
+au BufNewFile,BufRead *.sil set filetype=tex
 au BufNewFile,BufRead SConstruct set filetype=python
 au BufNewFile,BufRead SConscript set filetype=python
+au BufNewFile,BufRead *.ts  set filetype=typescript
+au BufNewFile,BufRead *.tsx setfiletype typescript
 
 " Settings for git commit messages
 autocmd Filetype gitcommit setlocal spell textwidth=72
@@ -116,11 +133,19 @@ set backspace=2
 set scrolloff=10
 set modelines=0
 set clipboard=unnamedplus
-set showtabline=2
+"set showtabline=2
+set showtabline=1
 set history=1000
 set undolevels=1000
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.o
 set tabpagemax=50
+
+" Persistent undo
+try
+    set undodir=~/.vim_runtime/temp_dirs/undodir
+    set undofile
+catch
+endtry
 
 " Functions for setting wrapping for text editing or code editing
 function! CodeMode()
@@ -186,12 +211,14 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+nnoremap <C-B> :vsp<CR>
 
 " Clear highlighting
 nnoremap \			:noh<CR>
 
 " Leader
 let mapleader = ","
+let g:mapleader = ","
 " Remove trailing whitespace
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<CR>
 " Edit vimrc
@@ -219,6 +246,9 @@ nnoremap <leader>z z=
 " Change the wrap mode
 nnoremap <leader>wmc :call CodeMode()<CR>
 nnoremap <leader>wmt :call TextMode()<CR>
+" Wrap selection
+" nnoremap <leader>r g{jV}kJvgq
+nnoremap <leader>r vgq
 
 " Bool toggle
 function! BoolToggle()
@@ -231,6 +261,10 @@ function! BoolToggle()
 		execute "normal! viwo\<esc>dwiFALSE \<esc>b"
 	elseif thisword ==# "FALSE"
 		execute "normal! viwo\<esc>dwiTRUE \<esc>b"
+	elseif thisword ==# "True"
+		execute "normal! viwo\<esc>dwiFalse \<esc>b"
+	elseif thisword ==# "False"
+		execute "normal! viwo\<esc>dwiTrue \<esc>b"
 	endif
 endfunction
 
