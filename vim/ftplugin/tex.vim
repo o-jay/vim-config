@@ -1,10 +1,15 @@
 function! LatexMake()
-	exe '!pdflatex -interaction=nonstopmode -output-directory=' .
-		\ shellescape(expand('%:p:h'), 1) .
-		\ ' ' . expand('%') . ' && rm -f ' .
-		\ shellescape(expand('%:r'), 1) . '.log ' .
-		\ shellescape(expand('%:r'), 1) . '.toc ' .
-		\ shellescape(expand('%:r'), 1) . '.aux '
+	if expand('%:e') ==# "sil"
+		exe '!sile  ' . bufname("%")
+	else
+		exe '!pdflatex -interaction=nonstopmode -output-directory=' .
+			\ shellescape(expand('%:p:h'), 1) .
+			\ ' ' . expand('%')
+			"\ . ' && rm -f ' .
+			"\ shellescape(expand('%:r'), 1) . '.log ' .
+			"\ shellescape(expand('%:r'), 1) . '.toc ' .
+			"\ shellescape(expand('%:r'), 1) . '.aux '
+	endif
 endfunction
 
 function! LatexView()
