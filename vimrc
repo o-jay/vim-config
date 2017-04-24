@@ -29,15 +29,7 @@ let g:haskell_indent_do = 3
 let g:haskell_indent_in = 1
 let g:cabal_indent_section = 2
 
-" Hydra settings
-"let g:hydra_highlight_numbers           = 1
-"let g:hydra_highlight_builtin_types     = 0
-"let g:hydra_highlight_builtin_functions = 0
-"let g:hydra_highlight_exceptions        = 0
-"let g:hydra_highlight_space_errors      = 0
-
 " General settings
-" Some settings aren't used in nvim as they're the defaults
 set nofoldenable showcmd ruler number relativenumber autoindent showmode
 set showmatch nohidden nobackup nowritebackup noswapfile noautowrite title wrap
 set noerrorbells splitbelow splitright wildmenu lazyredraw autochdir
@@ -118,6 +110,11 @@ set softtabstop=4
 autocmd FileType lisp setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 autocmd FileType scheme setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+
+" Build commands for rust
+autocmd FileType rust nnoremap <buffer> <leader>m :!cargo build<CR>
+autocmd FileType rust nnoremap <buffer> <leader>n :!cargo run<CR>
+autocmd FileType rust nnoremap <buffer> <leader>v :!cargo clean<CR>
 
 " Encryption
 set cm=blowfish2
