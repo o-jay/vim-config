@@ -14,10 +14,10 @@ set cpo&vim
 let s:ft = matchstr(&ft, '^\([^.]\)\+')
 
 " A bunch of useful C keywords
-syn keyword	cStatement	break return continue fn impl implicit import
-syn keyword	cLabel		case default and or not let in imm mut
-syn keyword	cConditional	if else switch
-syn keyword	cRepeat		while for do this
+syn keyword	cStatement	break ret continue fn impl implicit import ty module
+syn keyword	cLabel		case default and or not let in imm mut defer
+syn keyword	cConditional	if elif else switch case
+syn keyword	cRepeat		while for do this ref unref
 
 syn keyword	cTodo		contained TODO FIXME XXX
 
@@ -209,7 +209,7 @@ if exists("c_comment_strings")
     syn region cComment	matchgroup=cCommentStart start="/\*" end="\*/" contains=@cCommentGroup,cCommentStartError,cCommentString,cCharacter,cNumbersCom,cSpaceError,@Spell fold extend
   endif
 else
-  syn region	cCommentL	start="//" skip="\\$" end="$" keepend contains=@cCommentGroup,cSpaceError,@Spell
+  syn region	cCommentL	start="#" skip="\\$" end="$" keepend contains=@cCommentGroup,cSpaceError,@Spell
   if exists("c_no_comment_fold")
     syn region	cComment	matchgroup=cCommentStart start="/\*" end="\*/" contains=@cCommentGroup,cCommentStartError,cSpaceError,@Spell extend
   else
@@ -226,10 +226,9 @@ if exists("c_gnu")
   syn keyword	cStatement	__asm__
   syn keyword	cOperator	typeof __real__ __imag__
 endif
-syn keyword	cType		int long short char void
-syn keyword	cType		signed unsigned float double
+syn match	cType		"[A-Z][A-Za-z0-9_]*"
 
-syn keyword	cStructure	struct class union enum
+syn keyword	cStructure	class enum
 syn keyword	cStorageClass	ccall variadic using
 
 syn keyword cConstant len clone

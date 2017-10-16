@@ -194,7 +194,7 @@ let s:delimiterMap = {
     \ 'htmlcheetah': { 'left': '##' },
     \ 'htmldjango': { 'left': '<!--','right': '-->', 'leftAlt': '{#', 'rightAlt': '#}' },
     \ 'htmlos': { 'left': '#', 'right': '/#' },
-    \ 'hydra': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/' },
+	\ 'hydra': { 'left': '#', 'leftAlt': '#{', 'rightAlt': '}#' },
     \ 'hxml': { 'left': '#' },
     \ 'ia64': { 'left': '#' },
     \ 'icon': { 'left': '#' },
