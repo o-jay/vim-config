@@ -231,13 +231,17 @@ else
 	nnoremap <leader>b :ConqueTermTab bash<CR>
 endif
 " Convert Current Line To Title Case
-nnoremap <leader>tc :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:noh<CR>
+nnoremap <leader>tt :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:noh<CR>
 " Make, clean and run
 nnoremap <leader>m	:!clear<CR>:! make<CR>
 nnoremap <leader>n	:!clear<CR>:! make run<CR>
 nnoremap <leader>v	:!clear<CR>:! make runv<CR>
 nnoremap <leader>x	:!clear<CR>:! make clean<CR>
-" Spell suggestions
+" Special make targets
+nnoremap <leader>ta	:!clear<CR>:! make targeta<CR>
+nnoremap <leader>tb	:!clear<CR>:! make targetb<CR>
+nnoremap <leader>tc	:!clear<CR>:! make targetc<CR>
+" Spell suggestion
 nnoremap <leader>z z=
 
 " Change the wrap mode
