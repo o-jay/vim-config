@@ -115,7 +115,7 @@ let s:delimiterMap = {
     \ 'coffee': { 'left': '#' },
     \ 'conkyrc': { 'left': '#' },
     \ 'context': { 'left': '%', 'leftAlt': '--' },
-    \ 'cpp': { 'left': '/*','right': '*/', 'leftAlt': '//' },
+    \ 'cpp': { 'left': '//', 'leftAlt': '/*','rightAlt': '*/' },
     \ 'cuda': { 'left': '/*','right': '*/', 'leftAlt': '//' },
     \ 'crontab': { 'left': '#' },
     \ 'cs': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/' },

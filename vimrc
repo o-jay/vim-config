@@ -29,6 +29,9 @@ let g:haskell_indent_do = 3
 let g:haskell_indent_in = 1
 let g:cabal_indent_section = 2
 
+" Make % jump between html tags
+packadd! matchit
+
 " General settings
 set nofoldenable showcmd ruler number relativenumber autoindent showmode
 set showmatch nohidden nobackup nowritebackup noswapfile noautowrite title wrap
@@ -36,6 +39,11 @@ set noerrorbells splitbelow splitright wildmenu lazyredraw autochdir
 set spelllang=en_gb
 set encoding=utf8
 set ffs=unix,dos,mac
+
+" Sane line joins
+if v:version > 703 || v:version == 703 && has('patch541')
+  set formatoptions+=j
+endif
 
 " Files ignored for completion
 set wildignore=*.o,*~,~*,*.pyc,vgcore*
@@ -88,6 +96,8 @@ au BufNewFile,BufRead SConstruct set filetype=python
 au BufNewFile,BufRead SConscript set filetype=python
 au BufNewFile,BufRead *.ts  set filetype=typescript
 au BufNewFile,BufRead *.tsx setfiletype typescript
+au BufNewFile,BufRead *.inc setfiletype cpp
+au BufNewFile,BufRead *.conf setfiletype conf
 
 " Settings for git commit messages
 autocmd Filetype gitcommit setlocal spell textwidth=72
@@ -182,6 +192,9 @@ nnoremap <tab>		%
 " Save having to press shift all the time
 nnoremap ;          :
 
+" Suspending ('> fg' to resume)
+nnoremap <C-b>      <C-z>
+
 " Tab navigation
 nnoremap <C-a>      :tabprevious<CR>
 nnoremap <C-z>      :tabnext<CR>
@@ -204,11 +217,11 @@ nnoremap f			0
 nnoremap g			$
 
 " Splits
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-nnoremap <C-B> :vsp<CR>
+" nnoremap <C-J> <C-W><C-J>
+" nnoremap <C-K> <C-W><C-K>
+" nnoremap <C-L> <C-W><C-L>
+" nnoremap <C-H> <C-W><C-H>
+" nnoremap <C-B> :vsp<CR>
 
 " Clear highlighting
 nnoremap \			:noh<CR>
