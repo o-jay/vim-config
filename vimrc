@@ -29,11 +29,14 @@ let g:haskell_indent_do = 3
 let g:haskell_indent_in = 1
 let g:cabal_indent_section = 2
 
+" Zig
+let g:zig_fmt_autosave = 1
+
 " Make % jump between html tags
 packadd! matchit
 
 " General settings
-set nofoldenable showcmd ruler number relativenumber autoindent showmode
+set nofoldenable showcmd ruler norelativenumber nonumber autoindent showmode
 set showmatch nohidden nobackup nowritebackup noswapfile noautowrite title wrap
 set noerrorbells splitbelow splitright wildmenu lazyredraw autochdir
 set spelllang=en_gb
@@ -89,6 +92,7 @@ au BufNewFile,BufRead *.kisl set filetype=c
 au BufNewFile,BufRead *.chs set filetype=haskell
 au BufNewFile,BufRead *.ll set filetype=llvm
 au BufNewFile,BufRead *.hy set filetype=hydra
+au BufNewFile,BufRead *.sb set filetype=subscript
 au BufNewFile,BufRead *.S.h set filetype=asm
 au BufNewFile,BufRead *.tex set filetype=tex " Avoid plaintex
 au BufNewFile,BufRead *.sil set filetype=tex

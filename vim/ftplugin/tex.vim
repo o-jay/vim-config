@@ -2,7 +2,8 @@ function! LatexMake()
 	if expand('%:e') ==# "sil"
 		exe '!sile  ' . bufname("%")
 	else
-		exe '!pdflatex -interaction=nonstopmode -output-directory=' .
+		"exe '!pdflatex -interaction=nonstopmode -output-directory=' .
+		exe '!xelatex -interaction=nonstopmode -output-directory=' .
 			\ shellescape(expand('%:p:h'), 1) .
 			\ ' ' . expand('%')
 			"\ . ' && rm -f ' .
