@@ -14,6 +14,9 @@ let g:NERDCustomDelimiters = {
 	\ 'h': { 'left': '/*', 'right': '*/', 'leftAlt': '//' }
 \ }
 
+" vimwiki
+let g:vimwiki_list = [{'path': '~/Dropbox/law/notes/', 'path_html': '~/Dropbox/law/notes/html/'}]
+
 " Haskell settings
 let g:haskell_enable_quantification = 1
 let g:haskell_enable_recursivedo = 1
@@ -80,7 +83,7 @@ filetype on
 filetype plugin indent on
 syntax enable
 set grepprg=grep\ -nH\ $*
-let &colorcolumn="80,120"
+let &colorcolumn="100"
 highlight ColorColumn ctermbg=DarkGray guibg=#2c2d27
 
 " Highlighting for other languages
@@ -102,6 +105,10 @@ au BufNewFile,BufRead *.ts  set filetype=typescript
 au BufNewFile,BufRead *.tsx setfiletype typescript
 au BufNewFile,BufRead *.inc setfiletype cpp
 au BufNewFile,BufRead *.conf setfiletype conf
+
+" Some file use textmode
+au BufNewFile,BufRead *.wiki call TextMode()
+au BufNewFile,BufRead *.txt call TextMode()
 
 " Settings for git commit messages
 autocmd Filetype gitcommit setlocal spell textwidth=72
@@ -163,12 +170,14 @@ function! CodeMode()
 	setlocal textwidth=0
 	setlocal wrapmargin=0
 	setlocal nospell
+	setlocal formatoptions=tcqj
 endfunction
 
 function! TextMode()
 	setlocal textwidth=79
 	setlocal wrapmargin=79
 	setlocal spell
+	setlocal formatoptions=want
 endfunction
 
 " CodeMode by default
