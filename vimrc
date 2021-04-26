@@ -15,7 +15,9 @@ let g:NERDCustomDelimiters = {
 \ }
 
 " vimwiki
-let g:vimwiki_list = [{'path': '~/Dropbox/law/notes/', 'path_html': '~/Dropbox/law/notes/html/'}]
+let g:vimwiki_list = [
+			\ {'path': '~/Dropbox/law/notes/', 'path_html': '~/Dropbox/law/notes/html/'},
+			\ {'path': '~/Dropbox/wiki', 'path_html': '~/Dropbox/wiki/html/'}]
 
 " Haskell settings
 let g:haskell_enable_quantification = 1
@@ -105,6 +107,9 @@ au BufNewFile,BufRead *.ts  set filetype=typescript
 au BufNewFile,BufRead *.tsx setfiletype typescript
 au BufNewFile,BufRead *.inc setfiletype cpp
 au BufNewFile,BufRead *.conf setfiletype conf
+au BufNewFile,BufRead *.css setl sw=4 ts=4 noexpandtab
+au BufNewFile,BufRead *.sass setl sw=4 ts=4 noexpandtab
+au BufNewFile,BufRead *.scss setl sw=4 ts=4 noexpandtab
 
 " Some file use textmode
 au BufNewFile,BufRead *.wiki call TextMode()
@@ -230,11 +235,12 @@ nnoremap f			0
 nnoremap g			$
 
 " Splits
-" nnoremap <C-J> <C-W><C-J>
-" nnoremap <C-K> <C-W><C-K>
-" nnoremap <C-L> <C-W><C-L>
-" nnoremap <C-H> <C-W><C-H>
-" nnoremap <C-B> :vsp<CR>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+nnoremap <leader>l :vsp<CR>
+nnoremap <leader>p :sp<CR>
 
 " Clear highlighting
 nnoremap \			:noh<CR>
