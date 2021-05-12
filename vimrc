@@ -6,6 +6,10 @@ filetype off " Gets turned on later, but it screws up pathogen if it's on now
 execute pathogen#infect()
 Helptags
 
+call plug#begin('~/.vim/plugged')
+Plug 'maxmellon/vim-jsx-pretty'
+call plug#end()
+
 " Nerd commenter settings
 let g:NERDSpaceDelims=1
 " By default, nerdcommenter uses C++ style comments for all C/C++ header files.
@@ -85,7 +89,8 @@ filetype on
 filetype plugin indent on
 syntax enable
 set grepprg=grep\ -nH\ $*
-let &colorcolumn="100"
+" let &colorcolumn="100"
+let &colorcolumn="80,100"
 highlight ColorColumn ctermbg=DarkGray guibg=#2c2d27
 
 " Highlighting for other languages
@@ -128,9 +133,10 @@ set incsearch ignorecase smartcase hlsearch
 filetype plugin indent on
 
 " Indents (normally use tabs)
-set tabstop=4
-set shiftwidth=4
-set softtabstop=4
+set tabstop=4 shiftwidth=4 softtabstop=4
+
+" Use 8 character tabs in c
+autocmd FileType c setlocal tabstop=8 shiftwidth=8 softtabstop=8
 
 " Use 2 spaces in haskell and lisps
 autocmd FileType lisp setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
