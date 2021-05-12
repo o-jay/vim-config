@@ -161,13 +161,19 @@ set mousemodel=popup
 set backspace=2
 set scrolloff=10
 set modelines=0
-set clipboard=unnamedplus
 "set showtabline=2
 set showtabline=1
 set history=1000
 set undolevels=1000
 set wildignore=*.swp,*.bak,*.pyc,*.class,*.o
 set tabpagemax=50
+
+" Clipboard
+if has('macunix')
+	set clipboard=unnamed
+else
+	set clipboard=unnamedplus
+endif
 
 " Persistent undo
 try
@@ -202,7 +208,9 @@ autocmd GUIEnter * set visualbell t_vb=
 autocmd BufEnter * :syntax sync fromstart
 
 " Remove trailing whitespace on save
-autocmd BufWritePre * :%s/\s\+$//e
+if !has('macunix')
+	autocmd BufWritePre * :%s/\s\+$//e
+endif
 
 " Copy/Paste
 set pastetoggle=<F2>
