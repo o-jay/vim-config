@@ -8,6 +8,16 @@ Helptags
 
 call plug#begin('~/.vim/plugged')
 Plug 'maxmellon/vim-jsx-pretty'
+Plug 'preservim/nerdcommenter'
+Plug 'vimwiki/vimwiki'
+Plug 'neovimhaskell/haskell-vim'
+Plug 'idris-hackers/idris-vim'
+Plug 'rust-lang/rust.vim'
+Plug 'tikhomirov/vim-glsl'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'digitaltoad/vim-pug'
+Plug 'ziglang/zig.vim'
+Plug 'fatih/vim-go'
 call plug#end()
 
 " Nerd commenter settings
@@ -119,7 +129,7 @@ au BufNewFile,BufRead *.css setl sw=4 ts=4 noexpandtab
 au BufNewFile,BufRead *.sass setl sw=4 ts=4 noexpandtab
 au BufNewFile,BufRead *.scss setl sw=4 ts=4 noexpandtab
 
-" Some file use textmode
+" Some files use textmode
 au BufNewFile,BufRead *.wiki call TextMode()
 au BufNewFile,BufRead *.txt call TextMode()
 
@@ -164,7 +174,6 @@ set mousemodel=popup
 set backspace=2
 set scrolloff=10
 set modelines=0
-"set showtabline=2
 set showtabline=1
 set history=1000
 set undolevels=1000
@@ -194,8 +203,8 @@ function! CodeMode()
 endfunction
 
 function! TextMode()
-	setlocal textwidth=79
-	setlocal wrapmargin=79
+	setlocal textwidth=80
+	setlocal wrapmargin=80
 	setlocal spell
 	setlocal formatoptions=want
 endfunction
