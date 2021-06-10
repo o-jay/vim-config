@@ -19,9 +19,7 @@ let g:NERDCustomDelimiters = {
 \ }
 
 " vimwiki
-let g:vimwiki_list = [
-			\ {'path': '~/Dropbox/law/notes/', 'path_html': '~/Dropbox/law/notes/html/'},
-			\ {'path': '~/Dropbox/wiki', 'path_html': '~/Dropbox/wiki/html/'}]
+let g:vimwiki_list = [{'path': '~/Dropbox/wiki', 'path_html': '~/Dropbox/wiki/html/'}]
 
 " Haskell settings
 let g:haskell_enable_quantification = 1
@@ -93,7 +91,12 @@ set grepprg=grep\ -nH\ $*
 let &colorcolumn="80,100"
 highlight ColorColumn ctermbg=DarkGray guibg=#2c2d27
 
+" List chars
+set list
+set listchars=tab:ʾ\ ,trail:•,extends:⟩,precedes:⟨
+
 " Highlighting for other languages
+au BufNewFile,BufRead *.h set filetype=c
 au BufNewFile,BufRead *.chrd set filetype=conf
 au BufNewFile,BufRead *.arc set filetype=lisp
 au BufNewFile,BufRead *.nut set filetype=java " Close enough for Squirrel
@@ -270,12 +273,6 @@ nnoremap <leader>e :e $MYVIMRC<CR>
 nnoremap <leader>a :%y+<CR>
 " Source the current file
 nnoremap <leader>s :so %<CR>
-" Open a bash shell
-if has('nvim')
-	nnoremap <leader>b :tabnew<CR>:terminal<CR>
-else
-	nnoremap <leader>b :ConqueTermTab bash<CR>
-endif
 " Convert Current Line To Title Case
 nnoremap <leader>tt :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:noh<CR>
 " Make, clean and run

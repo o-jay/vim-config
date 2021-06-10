@@ -1,7 +1,5 @@
 " Vim syntax file
 " Language:	GNU Assembler
-" Maintainer:	Ole Day <olejday@gmail.com>
-" Last Change:	2018 Jan 14
 
 if exists("b:current_syntax")
   finish
