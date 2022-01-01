@@ -7,6 +7,7 @@ execute pathogen#infect()
 Helptags
 
 call plug#begin('~/.vim/plugged')
+Plug 'leafgarland/typescript-vim'
 Plug 'maxmellon/vim-jsx-pretty'
 Plug 'preservim/nerdcommenter'
 Plug 'vimwiki/vimwiki'
@@ -17,7 +18,10 @@ Plug 'tikhomirov/vim-glsl'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'digitaltoad/vim-pug'
 Plug 'ziglang/zig.vim'
-Plug 'fatih/vim-go'
+Plug 'udalov/kotlin-vim'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'godlygeek/tabular'
+Plug 'purescript-contrib/purescript-vim'
 call plug#end()
 
 " Nerd commenter settings
@@ -66,7 +70,7 @@ if v:version > 703 || v:version == 703 && has('patch541')
 endif
 
 " Files ignored for completion
-set wildignore=*.o,*~,~*,*.pyc,vgcore*
+set wildignore=*.o,*~,~*,*.pyc,vgcore*,*.ibc
 if has("win16") || has("win32")
     set wildignore+=.git\*,.hg\*,.svn\*
 else
@@ -128,6 +132,7 @@ au BufNewFile,BufRead *.conf setfiletype conf
 au BufNewFile,BufRead *.css setl sw=4 ts=4 noexpandtab
 au BufNewFile,BufRead *.sass setl sw=4 ts=4 noexpandtab
 au BufNewFile,BufRead *.scss setl sw=4 ts=4 noexpandtab
+au BufNewFile,BufRead Tupdefault setfiletype tup
 
 " Some files use textmode
 au BufNewFile,BufRead *.wiki call TextMode()
@@ -155,11 +160,13 @@ autocmd FileType c setlocal tabstop=8 shiftwidth=8 softtabstop=8
 autocmd FileType lisp setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 autocmd FileType scheme setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 autocmd FileType haskell setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
+autocmd FileType purescript setlocal tabstop=2 shiftwidth=2 softtabstop=2 expandtab
 
 " Build commands for rust
 autocmd FileType rust nnoremap <buffer> <leader>m :!cargo build<CR>
 autocmd FileType rust nnoremap <buffer> <leader>n :!cargo run<CR>
 autocmd FileType rust nnoremap <buffer> <leader>v :!cargo clean<CR>
+autocmd FileType rust nnoremap <buffer> <leader>t :!cargo test<CR>
 
 " Encryption
 set cm=blowfish2
@@ -172,7 +179,7 @@ set mousemodel=popup
 
 " Other settings
 set backspace=2
-set scrolloff=10
+set scrolloff=4
 set modelines=0
 set showtabline=1
 set history=1000
@@ -283,18 +290,17 @@ nnoremap <leader>a :%y+<CR>
 " Source the current file
 nnoremap <leader>s :so %<CR>
 " Convert Current Line To Title Case
-nnoremap <leader>tt :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:noh<CR>
+nnoremap <leader>c :s/\<\(\w\)\(\w*\)\>/\u\1\L\2/g<CR>:noh<CR>
 " Make, clean and run
-nnoremap <leader>m	:!clear<CR>:! make<CR>
-nnoremap <leader>n	:!clear<CR>:! make run<CR>
-nnoremap <leader>v	:!clear<CR>:! make runv<CR>
-nnoremap <leader>x	:!clear<CR>:! make clean<CR>
-" Special make targets
-nnoremap <leader>ta	:!clear<CR>:! make targeta<CR>
-nnoremap <leader>tb	:!clear<CR>:! make targetb<CR>
-nnoremap <leader>tc	:!clear<CR>:! make targetc<CR>
+nnoremap <leader>m	:!clear<CR>:! make -j5 <CR>
+nnoremap <leader>n	:!clear<CR>:! make -j5 run<CR>
+nnoremap <leader>v	:!clear<CR>:! make -j5 runv<CR>
+nnoremap <leader>x	:!clear<CR>:! make -j5 clean<CR>
+nnoremap <leader>t	:!clear<CR>:! make -j5 test<CR>
 " Spell suggestion
 nnoremap <leader>z z=
+" Format json
+nnoremap <leader>j	:%!python -m json.tool<CR>:set ft=json<CR>
 
 " Change the wrap mode
 nnoremap <leader>wmc :call CodeMode()<CR>
