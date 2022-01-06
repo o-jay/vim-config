@@ -1,0 +1,39 @@
+[global_config]
+  enabled_plugins = LaunchpadBugURLHandler, LaunchpadCodeURLHandler, APTURLHandler, TerminatorThemes
+  suppress_multiple_term_dialog = True
+[keybindings]
+  help = <Primary><Shift>KP_Multiply
+[profiles]
+  [[default]]
+    cursor_color = "#ffffff"
+    font = Unifont Medium 12
+    foreground_color = "#ffffff"
+    show_titlebar = False
+    scrollbar_position = hidden
+    scrollback_lines = 1024
+    palette = "#878787:#ff6600:#ccff04:#ffcc00:#44b4cc:#9933cc:#44b4cc:#f5f5f5:#555555:#ff0000:#00ff00:#ffff00:#0000ff:#ff00ff:#00ffff:#e5e5e5"
+    use_custom_command = True
+    custom_command = fish
+    use_system_font = False
+    background_image = None
+  [[backup]]
+    background_color = "#272820"
+    cursor_color = "#aaaaaa"
+    font = PxPlus IBM VGA8 12
+    foreground_color = "#ffffff"
+    show_titlebar = False
+    scrollbar_position = hidden
+    scrollback_lines = 4096
+    palette = "#000000:#cd0000:#00cd00:#cdcd00:#0000cd:#cd00cd:#00cdcd:#faebd7:#404040:#ff0000:#00ff00:#ffff00:#0000ff:#ff00ff:#00ffff:#ffffff"
+    use_custom_command = True
+    custom_command = fish
+    use_system_font = False
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]

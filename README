@@ -1,3 +1,6 @@
 My Vim config. It's not very interesting but this is the best way for me to
 keep track of it. Feel free to use anything you find in it (including the
 update scripts).
+
+The `term` directory also includes a few configs and fonts for setting up a
+terminal.
