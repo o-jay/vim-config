@@ -108,6 +108,7 @@ highlight ColorColumn ctermbg=DarkGray guibg=#2c2d27
 " List chars
 set list
 set listchars=tab:ʾ\ ,trail:•,extends:⟩,precedes:⟨
+highlight SpecialKey ctermfg=DarkGrey
 
 " Highlighting for other languages
 au BufNewFile,BufRead *.h set filetype=c
