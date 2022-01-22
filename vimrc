@@ -22,6 +22,8 @@ Plug 'udalov/kotlin-vim'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'godlygeek/tabular'
 Plug 'purescript-contrib/purescript-vim'
+Plug 'evanleck/vim-svelte'
+Plug 'othree/html5.vim'
 call plug#end()
 
 " Nerd commenter settings
@@ -52,6 +54,10 @@ let g:cabal_indent_section = 2
 
 " Zig
 let g:zig_fmt_autosave = 1
+
+" HTML indenting
+let g:html_indent_script1 = "inc"
+let g:html_indent_style1 = "inc"
 
 " Make % jump between html tags
 packadd! matchit
@@ -181,7 +187,7 @@ set mousemodel=popup
 " Other settings
 set backspace=2
 set scrolloff=4
-set modelines=0
+set modeline modelines=3
 set showtabline=1
 set history=1000
 set undolevels=1000
@@ -302,6 +308,8 @@ nnoremap <leader>t	:!clear<CR>:! make -j5 test<CR>
 nnoremap <leader>z z=
 " Format json
 nnoremap <leader>j	:%!python -m json.tool<CR>:set ft=json<CR>
+" Disable indenting
+nnoremap <leader>i :setl noai nocin nosi inde=<CR>
 
 " Change the wrap mode
 nnoremap <leader>wmc :call CodeMode()<CR>
